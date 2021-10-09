@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.parcial1_client.model.Command;
 import com.example.parcial1_client.model.Particle;
 import com.google.gson.Gson;
 
@@ -48,6 +49,7 @@ private String grupo;
         redBtn.setOnClickListener(this);
         greenBtn.setOnClickListener(this);
         blueBtn.setOnClickListener(this);
+        deleteBtn.setOnClickListener(this);
         editQuant.setInputType(2);
         editQuant.setFilters(new InputFilter[] { new InputFilter.LengthFilter(2) });
         editX.setInputType(2);
@@ -91,6 +93,7 @@ private String grupo;
                         !editQuant.getText().toString().replaceAll("\\s","").isEmpty()&&
                              !editX.getText().toString().replaceAll("\\s","").isEmpty()&&
                              !editY.getText().toString().replaceAll("\\s","").isEmpty()) {
+                         if(!(r==0)&&!(g==0)&&!(b==0)){
                     Gson gson = new Gson();
                     posX = Float.parseFloat(editX.getText().toString());
                     posY = Float.parseFloat(editY.getText().toString());
@@ -100,8 +103,17 @@ private String grupo;
                     String json = gson.toJson(obj);
                     tcp.sendMessage(json);
                 }else{
+                         Toast.makeText(this, "Por favor,selecciona un color", Toast.LENGTH_SHORT).show();
+                     }}else{
                          Toast.makeText(this, "Por favor, llena todos los datos", Toast.LENGTH_SHORT).show();
                      }
+                break;
+            case R.id.deleteBtn:
+                Gson gson = new Gson();
+                String borrar = "x";
+                Command c = new Command(borrar);
+                String json = gson.toJson(c);
+                tcp.sendMessage(json);
                 break;
         }
     }
